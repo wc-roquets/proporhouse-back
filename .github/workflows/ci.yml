@@ -1,0 +1,49 @@
+name: CI/CD
+
+on: [ push ]
+
+jobs:
+   build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    env:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: global
+      REDIS_URL: redis://127.0.0.1:6379/1
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1.50.2
+      with:
+        ruby-version: 2.7.1
+
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql version: 10
+        postgresql db: global
+        postgresql user: postgres
+        postgresql password: postgres
+
+    - name: Dependencies
+      run: |
+        gem install bundler
+        bundle install
+    - name: Create Database
+      run: |
+        rake db:setup
+    - name: Run Rubocop
+      run: |
+        bundle exec rubocop
+    - name: Run Tests
+      run: |
+        RAILS_ENV=test rake db:migrate
+        bundle exec rspec
