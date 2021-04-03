@@ -1,25 +1,25 @@
- default: &default
-  adapter: postgresql
-  encoding: unicode
-  host: <%= ENV['DB_HOST'] || "localhost" %>
-  port: <%= ENV['DB_PORT'] || 5432 %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+default: &default
+    adapter: postgresql
+    encoding: unicode
+    host: <%= ENV['DB_HOST'] || "localhost" %>
+    port: <%= ENV['DB_PORT'] || 5432 %>
+    username: <%= ENV['DB_USER'] %>
+    password: <%= ENV['DB_PASS'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 
 development:
-  <<: *default
-  database: <%= ENV['DB_NAME'] %>_development
-  timeout: 5000
+    <<: *default
+    database: <%= ENV['DB_NAME'] %>_development
+    timeout: 5000
 test:
-  <<: *default
-  database: <%= ENV['DB_NAME'] %>_test
+    <<: *default
+    database: <%= ENV['DB_NAME'] %>_test
 
 staging:
-  adapter: postgresql
-  database: <%= ENV['DB_NAME'] %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
-  timeout: 5000
+    adapter: postgresql
+    database: <%= ENV['DB_NAME'] %>
+    host: <%= ENV['DB_HOST'] %>
+    username: <%= ENV['DB_USER'] %>
+    password: <%= ENV['DB_PASS'] %>
+    timeout: 5000
