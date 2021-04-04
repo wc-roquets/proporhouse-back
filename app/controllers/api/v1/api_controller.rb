@@ -15,7 +15,7 @@ module Api
       rescue_from ActionController::ParameterMissing,  with: :render_parameter_missing
 
       def status
-        render json: { en_linea: true }
+        render json: { online: true }
       end
 
       private
