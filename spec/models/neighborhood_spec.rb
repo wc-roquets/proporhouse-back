@@ -15,5 +15,31 @@
 require 'rails_helper'
 
 RSpec.describe Neighborhood, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'creation' do
+    it 'can be created' do
+      country = Country.create!(name: 'Colombia')
+      department = Department.create!(country_id: country.id, name: 'Antioquia')
+      city = City.create!(department_id: department.id, name: 'Medellin')
+      neighborhood = Neighborhood.create!(city_id: city.id, name: 'Robledo')
+      expect(neighborhood).to be_valid
+    end
+    it 'if city not exist cannot create' do
+      neighborhood = Neighborhood.new(name: 'Robledo')
+      expect(neighborhood).not_to be_valid
+    end
+    it 'if name is nil cannot be created' do
+      country = Country.create!(name: 'Colombia')
+      department = Department.create!(country_id: country.id, name: 'Antioquia')
+      city = City.new(department_id: department.id, name: 'Medellin')
+      neighborhood = Neighborhood.new(city_id: city.id, name: nil)
+      expect(neighborhood).not_to be_valid
+    end
+    it 'if name is blank cannot be created' do
+      country = Country.create!(name: 'Colombia')
+      department = Department.create!(country_id: country.id, name: 'Antioquia')
+      city = City.new(department_id: department.id, name: '')
+      neighborhood = Neighborhood.new(city_id: city.id, name: nil)
+      expect(neighborhood).not_to be_valid
+    end
+  end
 end

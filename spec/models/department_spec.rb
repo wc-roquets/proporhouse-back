@@ -15,5 +15,23 @@
 require 'rails_helper'
 
 RSpec.describe Department, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'creation' do
+    it 'can be created' do
+      country = Country.create!(name: 'Colombia')
+      department = Department.create!(country_id: country.id, name: 'Cundinamarca')
+      expect(department).to be_valid
+    end
+    it 'if country not exist cannot create' do
+      department = Department.new(name: 'Cundinamarca')
+      expect(department).not_to be_valid
+    end
+    it 'if name is nil cannot be created' do
+      department = Department.new(name: nil)
+      expect(department).not_to be_valid
+    end
+    it 'if name is blank cannot be created' do
+      department = Department.new(name: '')
+      expect(department).not_to be_valid
+    end
+  end
 end
